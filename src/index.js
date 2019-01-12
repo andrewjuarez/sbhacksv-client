@@ -9,6 +9,7 @@ import reducers from "./reducers";
 import history from "./history";
 import App from "./components/App";
 import FeedForm from "./components/feed/FeedForm";
+import Home from "./components/home/Home";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -23,7 +24,7 @@ ReactDOM.render(
     <Router history={history}>
       <App>
         <Switch>
-          <Route path="/" exact component={() => <div>Homepage</div>} />
+          <Route path="/" exact component={Home} />
           <Route path="/post" exact component={FeedForm} />
         </Switch>
       </App>

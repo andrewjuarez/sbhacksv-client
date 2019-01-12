@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { signIn, signOut, saveEmail } from "../actions";
+import { signIn, signOut, saveName, saveSchool } from "../actions";
+import getSchoolFromEmail from "../utils/getSchoolFromEmail";
 
 class GoogleAuth extends Component {
   componentDidMount() {
@@ -24,11 +25,13 @@ class GoogleAuth extends Component {
     
     if (isSignedIn) {
       this.props.signIn(this.auth.currentUser.get().getId());
-      this.props.saveEmail(this.auth.currentUser.get().getBasicProfile().getEmail());
+      this.props.saveName(this.auth.currentUser.get().getBasicProfile().getName());
       if (this.auth.currentUser.get().getBasicProfile().getEmail().slice(-4) !== ".edu") {
         console.log("Not an .edu student, logged out");
         this.auth.signOut();
+        return;
       }
+      this.props.saveSchool(getSchoolFromEmail(this.auth.currentUser.get().getBasicProfile().getEmail()));
     } else
       this.props.signOut();
   }
@@ -73,4 +76,4 @@ const mapStateToProps = state => {
   return { isSignedIn: state.auth.isSignedIn };
 }
 
-export default connect(mapStateToProps, { signIn, signOut, saveEmail })(GoogleAuth);
+export default connect(mapStateToProps, { signIn, signOut, saveName, saveSchool })(GoogleAuth);

@@ -1,18 +1,23 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Formik, Form, ErrorMessage } from "formik";
 import  { Button, Form as SemForm, Menu } from "semantic-ui-react";
 import * as Yup from "yup";
 
 import SemField from "../helpers/SemField";
+import { makeEvent } from "../../actions";
+import history from "../../history";
 
 class FeedForm extends Component {
 
   state = { disableButton: false };
 
   onSubmit = (values, actions) => {
+    this.setState({ disableButton: true });
     const { day, month, year, time } = values;
     values = { ...values, date: `${day} ${month} ${year} ${time}` };
     console.log(values);
+    this.props.makeEvent(values, () => this.setState({ disableButton: false }, () => history.push("/")));
     actions.setSubmitting(false);
   }
 
@@ -110,4 +115,4 @@ class FeedForm extends Component {
   }
 }
 
-export default FeedForm;
+export default connect(null, { makeEvent })(FeedForm);
