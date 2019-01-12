@@ -36,7 +36,7 @@ export const signOut = () => {
 export const makeEvent = (formValues, callback) => async (dispatch, getState) => {
   try {
     await server.post("/event", {
-       ...formValues, userId: getState().auth.userId, school: getState().auth.userSchool
+       ...formValues, userName: getState().auth.userName, school: getState().auth.userSchool
       } 
     );
 
@@ -50,7 +50,7 @@ export const makeEvent = (formValues, callback) => async (dispatch, getState) =>
 
 export const fetchEvents = () =>  async (dispatch, getState) => {
   try {
-    const response = await server.post("/events", { school: getState().auth.userSchool || "uci" });
+    const response = await server.post("/events", { school: getState().auth.userSchool || "" });
     // console.log(getState().auth);
     // console.log(response);
     dispatch({ type: FETCH_EVENTS, payload: response.data });

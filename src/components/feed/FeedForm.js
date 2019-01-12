@@ -30,6 +30,7 @@ class FeedForm extends Component {
       year: Yup.string().min(2, "Too short!").required("You must enter a year"),
       time: Yup.string().min(2, "Too short!").required("You must enter a time"),
       description: Yup.string().min(2, "Too short!").required("You must enter a description"),
+      category: Yup.string().min(2, "Too short!").required("You must enter a category"),
     })
   );
 
@@ -70,6 +71,13 @@ class FeedForm extends Component {
           </SemForm.Group>
         </Menu.Item>
         <Menu.Item>
+          <Menu.Header>Category</Menu.Header>
+          <SemForm.Group>
+            <SemField type="text" fluid component={SemForm.Input} name="category" placeholder="Club Meeting" />
+            <ErrorMessage name="category" component={this.renderError} />
+          </SemForm.Group>
+        </Menu.Item>
+        <Menu.Item>
           <Menu.Header>Day/Month/Year</Menu.Header>
           <SemForm.Group>
             <SemField type="text" component={SemForm.Input} name="day" placeholder="06" />
@@ -105,7 +113,7 @@ class FeedForm extends Component {
             location: "",
             day: "",
             month: "",
-            year: "", time: "", description: ""
+            year: "", time: "", description: "", category: ""
           }}
           onSubmit={this.onSubmit}
           render={this.renderForm} 

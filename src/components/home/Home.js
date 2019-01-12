@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchEvents } from "../../actions";
 
+import FeedList from "../feed/FeedList";
+
 class Home extends Component {
 
   state = { prevAuth: null };
@@ -24,6 +26,7 @@ class Home extends Component {
     return (
       <div>
         Homepage New
+        <FeedList />
       </div>
     );
   }
