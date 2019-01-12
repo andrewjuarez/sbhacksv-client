@@ -36,7 +36,10 @@ export const signOut = () => {
 export const makeEvent = (formValues, callback) => async (dispatch, getState) => {
   try {
     await server.post("/event", {
-       ...formValues, userName: getState().auth.userName, school: getState().auth.userSchool
+       ...formValues, 
+       userId: getState().auth.userId, 
+       userName: getState().auth.userName, 
+       school: getState().auth.userSchool
       } 
     );
 

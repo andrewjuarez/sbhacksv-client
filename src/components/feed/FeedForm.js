@@ -30,8 +30,8 @@ class FeedForm extends Component {
 
   onSubmit = (values, actions) => {
     this.setState({ disableButton: true });
-    const { eventdate, hour, minute } = values;
-    values = { ...values, eventdate: `${eventdate} ${hour}:${minute}:00` };
+    const { eventdatestart, hourstart, minutestart, eventdateend, hourend, minuteend } = values;
+    values = { ...values, eventdatestart: `${eventdatestart} ${hourstart}:${minutestart}:00`, eventdateend: `${eventdateend} ${hourend}:${minuteend}:00` };
     console.log(values);
     this.props.makeEvent(values, () => this.setState({ disableButton: false }, () => history.push("/")));
     actions.setSubmitting(false);
@@ -43,10 +43,12 @@ class FeedForm extends Component {
       location: Yup.string().min(2, "Too short!").required("You must enter an address"),
       description: Yup.string().min(2, "Too short!").required("You must enter a description"),
       category: Yup.string().required("You must enter a category"),
-      eventdate: Yup.string().required("Please specify a date!"),
-      hour: Yup.number().min(0, "Minimum hour is 0.").max(23, "Maximum hour is 23.").integer("Must be an integer.").required("Please specify hour!"),
-      minute: Yup.number().min(0, "Minimum minute is 0.").max(59, "Maximum minute is 59.").integer("Must be an integer.").required("Please specify minute!"),
-
+      eventdatestart: Yup.string().required("Please specify a date!"),
+      hourstart: Yup.number().min(0, "Minimum hour is 0.").max(23, "Maximum hour is 23.").integer("Must be an integer.").required("Please specify hour!"),
+      minutestart: Yup.number().min(0, "Minimum minute is 0.").max(59, "Maximum minute is 59.").integer("Must be an integer.").required("Please specify minute!"),
+      eventdateend: Yup.string().required("Please specify a date!"),
+      hourend: Yup.number().min(0, "Minimum hour is 0.").max(23, "Maximum hour is 23.").integer("Must be an integer.").required("Please specify hour!"),
+      minuteend: Yup.number().min(0, "Minimum minute is 0.").max(59, "Maximum minute is 59.").integer("Must be an integer.").required("Please specify minute!")
     })
   );
 
@@ -94,14 +96,27 @@ class FeedForm extends Component {
           </SemForm.Group>
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Event date and time</Menu.Header>
+          <Menu.Header>Event start date and time</Menu.Header>
           <SemForm.Group>
-            <SemField type="date" fluid component={SemForm.Input} name="eventdate" />
-            <ErrorMessage name="eventdate" component={this.renderError} />
-            <SemField type="number" component={SemForm.Input} name="hour" placeholder="Hour (24h format)" />
-            <SemField type="number" component={SemForm.Input} name="minute" placeholder="Minute" />
-            <ErrorMessage name="hour" component={this.renderError} />
-            <ErrorMessage name="minute" component={this.renderError} />
+            <SemField type="date" fluid component={SemForm.Input} name="eventdatestart" />
+            <ErrorMessage name="eventdatestart" component={this.renderError} />
+            <SemField type="number" component={SemForm.Input} name="hourstart" placeholder="Hour (24h format)" />
+            <SemField type="number" component={SemForm.Input} name="minutestart" placeholder="Minute" />
+            <ErrorMessage name="hourstart" component={this.renderError} />
+            <ErrorMessage name="minutestart" component={this.renderError} />
+            
+          </SemForm.Group>
+        </Menu.Item>
+
+        <Menu.Item>
+          <Menu.Header>Event end date and time</Menu.Header>
+          <SemForm.Group>
+            <SemField type="date" fluid component={SemForm.Input} name="eventdateend" />
+            <ErrorMessage name="eventdateend" component={this.renderError} />
+            <SemField type="number" component={SemForm.Input} name="hourend" placeholder="Hour (24h format)" />
+            <SemField type="number" component={SemForm.Input} name="minuteend" placeholder="Minute" />
+            <ErrorMessage name="hourend" component={this.renderError} />
+            <ErrorMessage name="minuteend" component={this.renderError} />
             
           </SemForm.Group>
         </Menu.Item>
@@ -129,9 +144,12 @@ class FeedForm extends Component {
               location: "",
               description: "", 
               category: "", 
-              eventdate: "",
-              hour: "",
-              minute: ""
+              eventdatestart: "",
+              hourstart: "",
+              minutestart: "",
+              eventdateend: "",
+              hourend: "",
+              minuteend: ""
             }}
             onSubmit={this.onSubmit}
             render={this.renderForm} 

@@ -30,7 +30,7 @@ class Home extends Component {
       return (
         <div>
           <Message info>
-            <Message.Header>Hi. Welcome to Youni, a board where you can post events located around your campus.</Message.Header>
+            <Message.Header>Hi. Welcome to Youni, a board where you can post events located around your University of California campus.</Message.Header>
             <p>Log in with your .edu email to get started!</p>
           </Message>
 

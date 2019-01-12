@@ -9,7 +9,7 @@ class Marker extends Component {
     switch(category) {
       case "parties": return "fire";
       case "professional": return "handshake";
-      case "promotion": return "money bill";
+      case "promotion": return "money";
       case "gaming": return "game";
       case "entertainment": return "star";
       case "food": return "food";
@@ -43,7 +43,7 @@ class Marker extends Component {
           <Card.Content extra>
             
             <Icon name={this.pickIconName(this.props.data.category)} />{this.props.data.category}
-            
+            <Icon name="map marker" />{this.props.data.location}
           </Card.Content>
         </Popup.Content>
       </Popup>

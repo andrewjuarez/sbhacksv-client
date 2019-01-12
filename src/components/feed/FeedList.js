@@ -10,7 +10,7 @@ class FeedList extends Component {
     switch(category) {
       case "parties": return "fire";
       case "professional": return "handshake";
-      case "promotion": return "money bill";
+      case "promotion": return "money";
       case "gaming": return "game";
       case "entertainment": return "star";
       case "food": return "food";
@@ -31,9 +31,12 @@ class FeedList extends Component {
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            
-            <Icon name={this.pickIconName(posting.category)} />{posting.category}
-            
+            <p>
+              <Icon name={this.pickIconName(posting.category)} />{posting.category}
+            </p>
+            <p>
+              <Icon name="map marker" />{posting.location}
+            </p>
           </Card.Content>
         </Card>
       );

@@ -4,9 +4,26 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 import Marker from "./Marker";
-import { calcCenterWithBounds } from "../../utils/geolocationUtils";
 
 class RenderGoogleMap extends Component {
+
+  pickSchoolCenter = () => {
+    switch(this.props.school) {
+      case "uci": return { lat: 33.6482478, lng: -117.8408066 };
+      case "berkeley": return { lat: 37.87156239999999, lng: -122.2581763 };
+      case "ucr": return { lat: 33.9745645, lng: -117.3245204 };
+
+      case "ucsb": return { lat: 34.4135868, lng: -119.8496976 };
+
+      case "ucm": return { lat: 37.3637343, lng: -120.4311096 };
+      case "ucsc": return { lat: 36.9776276, lng: -122.0543109 };
+      case "ucsd": return { lat: 32.8802438, lng: -117.2426505 }
+      case "ucla": return { lat: 34.070264, lng: -118.4440562 };
+      
+      default: 
+        return { lat: 33.6482478, lng: -117.8408066 };
+    }
+  }
 
   renderMarkers = () => {
     return _.map(this.props.event, (posting, key) => {
@@ -16,14 +33,17 @@ class RenderGoogleMap extends Component {
 
   render() {
     console.log("Map rerendered");
+    if (!this.props.school) {
+      return null;
+    }
     return (
       <div style={{height: '100vh', width: '100%'}}>
         <GoogleMap
-          key={"uci"} // forces a re-render of the component when the polyline changes
+          key={this.props.school || "noschool"} // forces a re-render of the component when the polyline changes
           bootstrapURLKeys={{key: "AIzaSyB10UMIWfiikx9uiADwx7XS53xb9Jm-MPM" }}
           yesIWantToUseGoogleMapApiInternals={true}
-          defaultCenter={calcCenterWithBounds(this.props.center)}
-          defaultZoom={this.props.zoom || 11}
+          defaultCenter={this.pickSchoolCenter()}
+          defaultZoom={14}
         >
           {this.renderMarkers()}
         </GoogleMap>
@@ -32,16 +52,8 @@ class RenderGoogleMap extends Component {
   }
 }
 
-RenderGoogleMap.defaultProps = {
-  center: {
-    northeast: { lat: 33.8365977, lng: -117.7962931 },
-    southwest: { lat: 33.68453230000001, lng: -117.9142825 }
-  },
-  zoom: 13
-};
-
 const mapStateToProps = state => {
-  return { event: state.event }
+  return { event: state.event, school: state.auth.userSchool }
 }
 
 export default connect(mapStateToProps)(RenderGoogleMap);
