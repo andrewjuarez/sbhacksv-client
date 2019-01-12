@@ -1,21 +1,37 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Formik, Form, ErrorMessage } from "formik";
-import  { Button, Form as SemForm, Menu } from "semantic-ui-react";
+import  { Button, Form as SemForm, Menu, Select, Container } from "semantic-ui-react";
 import * as Yup from "yup";
 
 import SemField from "../helpers/SemField";
 import { makeEvent } from "../../actions";
 import history from "../../history";
 
+const categoryOptions = [
+  { value: "parties", text: "Parties" },
+  { value: "sports", text: "Sports" },
+  { value: "professional", text: "Professional" },
+  { value: "promotion", text: "Promotion" },
+  { value: "gaming", text: "Gaming" },
+  { value: "entertainment", text: "Entertainment" },
+  { value: "food", text: "Food" },
+];
+
 class FeedForm extends Component {
+
+  componentDidMount() {
+    if (!this.props.isSignedIn) {
+      history.push("/");
+    }
+  }
 
   state = { disableButton: false };
 
   onSubmit = (values, actions) => {
     this.setState({ disableButton: true });
-    const { day, month, year, time } = values;
-    values = { ...values, date: `${day} ${month} ${year} ${time}` };
+    const { eventdate, hour, minute } = values;
+    values = { ...values, eventdate: `${eventdate} ${hour}:${minute}:00` };
     console.log(values);
     this.props.makeEvent(values, () => this.setState({ disableButton: false }, () => history.push("/")));
     actions.setSubmitting(false);
@@ -25,12 +41,12 @@ class FeedForm extends Component {
     Yup.object().shape({ 
       name: Yup.string().min(2, "Too short!").required("You must enter an event name"),
       location: Yup.string().min(2, "Too short!").required("You must enter an address"),
-      day: Yup.string().min(2, "Too short!").required("You must enter a day"),
-      month: Yup.string().min(2, "Too short!").required("You must enter a month"),
-      year: Yup.string().min(2, "Too short!").required("You must enter a year"),
-      time: Yup.string().min(2, "Too short!").required("You must enter a time"),
       description: Yup.string().min(2, "Too short!").required("You must enter a description"),
-      category: Yup.string().min(2, "Too short!").required("You must enter a category"),
+      category: Yup.string().required("You must enter a category"),
+      eventdate: Yup.string().required("Please specify a date!"),
+      hour: Yup.number().min(0, "Minimum hour is 0.").max(23, "Maximum hour is 23.").integer("Must be an integer.").required("Please specify hour!"),
+      minute: Yup.number().min(0, "Minimum minute is 0.").max(59, "Maximum minute is 59.").integer("Must be an integer.").required("Please specify minute!"),
+
     })
   );
 
@@ -73,21 +89,20 @@ class FeedForm extends Component {
         <Menu.Item>
           <Menu.Header>Category</Menu.Header>
           <SemForm.Group>
-            <SemField type="text" fluid component={SemForm.Input} name="category" placeholder="Club Meeting" />
+            <SemField fluid component={Select} name="category" placeholder="Select a category" options={categoryOptions} />
             <ErrorMessage name="category" component={this.renderError} />
           </SemForm.Group>
         </Menu.Item>
         <Menu.Item>
-          <Menu.Header>Day/Month/Year</Menu.Header>
+          <Menu.Header>Event date and time</Menu.Header>
           <SemForm.Group>
-            <SemField type="text" component={SemForm.Input} name="day" placeholder="06" />
-            <SemField type="text" component={SemForm.Input} name="month" placeholder="July" />
-            <SemField type="text" component={SemForm.Input} name="year" placeholder="2019" />
-            <SemField type="text" component={SemForm.Input} name="time" placeholder="13:30:00" />
-            <ErrorMessage name="day" component={this.renderError} />
-            <ErrorMessage name="month" component={this.renderError} />
-            <ErrorMessage name="year" component={this.renderError} />
-            <ErrorMessage name="time" component={this.renderError} />
+            <SemField type="date" fluid component={SemForm.Input} name="eventdate" />
+            <ErrorMessage name="eventdate" component={this.renderError} />
+            <SemField type="number" component={SemForm.Input} name="hour" placeholder="Hour (24h format)" />
+            <SemField type="number" component={SemForm.Input} name="minute" placeholder="Minute" />
+            <ErrorMessage name="hour" component={this.renderError} />
+            <ErrorMessage name="minute" component={this.renderError} />
+            
           </SemForm.Group>
         </Menu.Item>
 
@@ -104,23 +119,31 @@ class FeedForm extends Component {
 
   render () {
     return(
-      <Menu vertical fluid>
-        <Formik
-          validationSchema={this.validateSchema()}
-          validate={this.validateForm}
-          initialValues={{ 
-            name: "",
-            location: "",
-            day: "",
-            month: "",
-            year: "", time: "", description: "", category: ""
-          }}
-          onSubmit={this.onSubmit}
-          render={this.renderForm} 
-        />
-      </Menu>
+      <Container>
+        <Menu vertical fluid>
+          <Formik
+            validationSchema={this.validateSchema()}
+            validate={this.validateForm}
+            initialValues={{ 
+              name: "",
+              location: "",
+              description: "", 
+              category: "", 
+              eventdate: "",
+              hour: "",
+              minute: ""
+            }}
+            onSubmit={this.onSubmit}
+            render={this.renderForm} 
+          />
+        </Menu>
+      </Container>
     );
   }
 }
 
-export default connect(null, { makeEvent })(FeedForm);
+const mapStateToProps = state => {
+  return { isSignedIn: state.auth.isSignedIn };
+}
+
+export default connect(mapStateToProps, { makeEvent })(FeedForm);

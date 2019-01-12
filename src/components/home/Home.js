@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Grid, Message, Segment } from "semantic-ui-react";
+
 import { fetchEvents } from "../../actions";
 
 import FeedList from "../feed/FeedList";
+import RenderGoogleMap from "../map/RenderGoogleMap";
 
 class Home extends Component {
 
@@ -23,10 +26,32 @@ class Home extends Component {
   }
 
   render() {
+    if (this.props.auth.isSignedIn === false) {
+      return (
+        <div>
+          <Message info>
+            <Message.Header>Hi. Welcome to Youni, a board where you can post events located around your campus.</Message.Header>
+            <p>Log in with your .edu email to get started!</p>
+          </Message>
+
+        </div>
+      );
+    } else if (this.props.auth.isSignedIn === null) {
+      return null;
+    }
+
     return (
       <div>
-        Homepage New
-        <FeedList />
+        
+        <Grid stackable doubling>
+          <Grid.Column width={4}>
+            <Segment><FeedList /></Segment>
+          </Grid.Column>
+          <Grid.Column stretched width={12} >
+            <RenderGoogleMap />
+          </Grid.Column>
+        </Grid>
+      
       </div>
     );
   }

@@ -21,7 +21,7 @@ class Navbar extends Component {
     return (
       <Menu>
         <Menu.Item>
-          <Link to="/">UC Notify</Link>
+          <Link to="/">Youni</Link>
         </Menu.Item>
         {this.renderAuthLinks()}
         <Menu.Item position="right">

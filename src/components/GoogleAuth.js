@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Button, Icon } from "semantic-ui-react";
 
 import { signIn, signOut, saveName, saveSchool } from "../actions";
 import getSchoolFromEmail from "../utils/getSchoolFromEmail";
+import history from "../history";
 
 class GoogleAuth extends Component {
   componentDidMount() {
@@ -42,6 +44,7 @@ class GoogleAuth extends Component {
 
   onSignOutClick = () => {
     this.auth.signOut();
+    history.push("/");
   }
 
   renderAuthButton() {
@@ -49,17 +52,17 @@ class GoogleAuth extends Component {
       return <div></div>
     } else if (this.props.isSignedIn) {
       return (
-        <button className="ui red google button" onClick={this.onSignOutClick}>
-          <i className="google icon" />
+        <Button color="red" size="mini" onClick={this.onSignOutClick}>
+          <Icon name="google" />
           Sign Out
-        </button>
+        </Button>
       );
     } else {
       return (
-        <button className="ui red google button" onClick={this.onSignInClick}>
-          <i className="google icon" />
+        <Button color="red" size="mini" onClick={this.onSignInClick}>
+          <Icon name="google" />
           Sign In with Google
-        </button>
+        </Button>
       );
     }
   }
