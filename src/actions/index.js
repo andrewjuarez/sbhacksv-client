@@ -33,7 +33,7 @@ export const signOut = () => {
   }
 }
 
-export const makeEvent = (formValues, callback) => async (dispatch, getState) => {
+export const makeEvent = (formValues, callback, callbackError) => async (dispatch, getState) => {
   try {
     await server.post("/event", {
        ...formValues, 
@@ -47,7 +47,9 @@ export const makeEvent = (formValues, callback) => async (dispatch, getState) =>
   } catch (e) {
     console.log(e);
 
-    if (callback) callback();
+    const payload = e.response ? e.response.data.error : null;
+
+    if (callbackError) callbackError(payload || "Server error");
   }
 }
 

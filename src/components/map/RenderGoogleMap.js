@@ -37,7 +37,7 @@ class RenderGoogleMap extends Component {
       return null;
     }
     return (
-      <div style={{height: '100vh', width: '100%'}}>
+      <div style={{height: '80vh', width: '100%'}}>
         <GoogleMap
           key={this.props.school || "noschool"} // forces a re-render of the component when the polyline changes
           bootstrapURLKeys={{key: "AIzaSyB10UMIWfiikx9uiADwx7XS53xb9Jm-MPM" }}

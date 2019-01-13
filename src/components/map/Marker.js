@@ -1,7 +1,11 @@
 import React, { Component } from "react";
-import { Icon, Popup, Card } from "semantic-ui-react";
+import { Icon, Popup, Card, Button } from "semantic-ui-react";
 import formatDate from "../../utils/formatDate";
+import FeedReminder from "../feed/FeedReminder";
+
 class Marker extends Component {
+
+  state = { enableReminderForm: false }
 
   pickIconName = () => {
     const { category } = this.props.data;
@@ -17,6 +21,17 @@ class Marker extends Component {
       default:
         return "question";
     }
+  }
+
+  remindMePopup = (posting) => {
+    return (
+      <React.Fragment>
+        <Button disabled={this.state.enableReminderForm} fluid basic color="green" onClick={() => this.setState({ enableReminderForm: true })}>Remind me</Button>
+        {this.state.enableReminderForm && <FeedReminder eventId={posting._id} eventData={posting} />}
+      </React.Fragment>
+      
+       
+    );
   }
 
   renderType = () => {
@@ -52,6 +67,7 @@ class Marker extends Component {
             <p>
               <Icon name="calendar outline" />{`${formatDate(new Date(eventdatestart))} - ${formatDate(new Date(eventdateend))}`}
             </p>
+            {this.remindMePopup(this.props.data)}
           </Card.Content>
         </Popup.Content>
       </Popup>

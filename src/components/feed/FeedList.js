@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Card, Icon } from "semantic-ui-react";
+import { Card, Icon, Button, Popup } from "semantic-ui-react";
 import _ from "lodash";
 
 import formatDate from "../../utils/formatDate";
+import FeedReminder from "../feed/FeedReminder";
 
 class FeedList extends Component {
+
+  state = {};
 
   pickIconName = (category) => {
 
@@ -20,6 +23,20 @@ class FeedList extends Component {
       default:
         return "question";
     }
+  }
+
+  remindMePopup = (posting) => {
+    return (
+      <Popup
+        
+        on="click"
+        trigger={<Button fluid basic color="green">Remind me</Button>}
+      >
+        <Popup.Content>
+          <FeedReminder eventId={posting._id} eventData={posting} />
+        </Popup.Content>
+      </Popup>
+    );
   }
 
   renderFeed = () => {
@@ -43,13 +60,14 @@ class FeedList extends Component {
             <p>
               <Icon name="calendar outline" />{`${formatDate(new Date(posting.eventdatestart))} - ${formatDate(new Date(posting.eventdateend))}`}
             </p>
+            {this.remindMePopup(posting)}
           </Card.Content>
         </Card>
       );
     });
 
     return (
-      <Card.Group>
+      <Card.Group style={{ height: "80vh", overflow: "scroll" }}>
         {cardArray}
       </Card.Group>
     );

@@ -22,20 +22,28 @@ const categoryOptions = [
 
 class FeedForm extends Component {
 
+  state = { formError: "", disableButton: false };
+
   componentDidMount() {
     if (!this.props.isSignedIn) {
       history.push("/");
     }
   }
 
-  state = { disableButton: false };
-
   onSubmit = (values, actions) => {
     this.setState({ disableButton: true });
     const { eventdatestart, hourstart, minutestart, eventdateend, hourend, minuteend } = values;
     values = { ...values, eventdatestart: `${eventdatestart} ${hourstart}:${minutestart}:00`, eventdateend: `${eventdateend} ${hourend}:${minuteend}:00` };
     console.log(values);
-    this.props.makeEvent(values, () => this.setState({ disableButton: false }, () => history.push("/")));
+    this.props.makeEvent(
+      values, 
+      () => this.setState({ disableButton: false }, () => history.push("/")),
+      (payload) => {
+        console.log(payload);
+        this.setState({ formError: payload, disableButton: false });
+      }
+      
+    );
     actions.setSubmitting(false);
   }
 
@@ -132,6 +140,7 @@ class FeedForm extends Component {
             Submit
           </Button>
         </Menu.Item>
+        {this.state.formError}
 
       </Form>
     );
