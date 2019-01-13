@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Icon, Popup, Card } from "semantic-ui-react";
-
+import formatDate from "../../utils/formatDate";
 class Marker extends Component {
 
   pickIconName = () => {
@@ -13,12 +13,14 @@ class Marker extends Component {
       case "gaming": return "game";
       case "entertainment": return "star";
       case "food": return "food";
+      case "social": return "users";
       default:
         return "question";
     }
   }
 
   renderType = () => {
+    const { name, userName, description, category, location, eventdatestart, eventdateend } = this.props.data
     return (
       <Popup
         on="click"
@@ -34,16 +36,22 @@ class Marker extends Component {
       >
         <Popup.Content as={Card}>
           <Card.Content>
-            <Card.Header>{this.props.data.name}</Card.Header>
-            <Card.Meta>{this.props.data.userName}</Card.Meta>
+            <Card.Header>{name}</Card.Header>
+            <Card.Meta>{userName}</Card.Meta>
             <Card.Description>
-              {this.props.data.description}
+              {description}
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
-            
-            <Icon name={this.pickIconName(this.props.data.category)} />{this.props.data.category}
-            <Icon name="map marker" />{this.props.data.location}
+            <p>
+              <Icon name={this.pickIconName(category)} />{category}
+            </p>
+            <p>
+              <Icon name="map marker" />{location}
+            </p>
+            <p>
+              <Icon name="calendar outline" />{`${formatDate(new Date(eventdatestart))} - ${formatDate(new Date(eventdateend))}`}
+            </p>
           </Card.Content>
         </Popup.Content>
       </Popup>

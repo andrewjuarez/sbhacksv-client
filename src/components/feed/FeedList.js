@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { Card, Icon } from "semantic-ui-react";
 import _ from "lodash";
 
+import formatDate from "../../utils/formatDate";
+
 class FeedList extends Component {
 
   pickIconName = (category) => {
@@ -14,6 +16,7 @@ class FeedList extends Component {
       case "gaming": return "game";
       case "entertainment": return "star";
       case "food": return "food";
+      case "social": return "users";
       default:
         return "question";
     }
@@ -36,6 +39,9 @@ class FeedList extends Component {
             </p>
             <p>
               <Icon name="map marker" />{posting.location}
+            </p>
+            <p>
+              <Icon name="calendar outline" />{`${formatDate(new Date(posting.eventdatestart))} - ${formatDate(new Date(posting.eventdateend))}`}
             </p>
           </Card.Content>
         </Card>

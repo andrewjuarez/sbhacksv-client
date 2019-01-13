@@ -43,7 +43,7 @@ class RenderGoogleMap extends Component {
           bootstrapURLKeys={{key: "AIzaSyB10UMIWfiikx9uiADwx7XS53xb9Jm-MPM" }}
           yesIWantToUseGoogleMapApiInternals={true}
           defaultCenter={this.pickSchoolCenter()}
-          defaultZoom={14}
+          defaultZoom={13}
         >
           {this.renderMarkers()}
         </GoogleMap>

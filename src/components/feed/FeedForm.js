@@ -16,6 +16,7 @@ const categoryOptions = [
   { value: "gaming", text: "Gaming" },
   { value: "entertainment", text: "Entertainment" },
   { value: "food", text: "Food" },
+  { value: "social", text: "Social" }
 ];
 
 class FeedForm extends Component {
