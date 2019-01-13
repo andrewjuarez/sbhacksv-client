@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Formik, Form, ErrorMessage } from "formik";
-import  { Button, Form as SemForm, Menu, Select, Container } from "semantic-ui-react";
+import  { Button, Form as SemForm, Menu, Select, Container, Message } from "semantic-ui-react";
 import * as Yup from "yup";
 
 import SemField from "../helpers/SemField";
 import { makeEvent } from "../../actions";
 import history from "../../history";
-import validateDate from "../../utils/validateDate";
+import { validateDate, validateStartDate } from "../../utils/validateDate";
 
 const categoryOptions = [
-  { value: "parties", text: "Parties" },
+  { value: "party", text: "Party" },
   { value: "sports", text: "Sports" },
   { value: "professional", text: "Professional" },
   { value: "promotion", text: "Promotion" },
@@ -33,7 +33,10 @@ class FeedForm extends Component {
   onSubmit = (values, actions) => {
     this.setState({ disableButton: true });
     const { eventdatestart, hourstart, minutestart, eventdateend, hourend, minuteend } = values;
-    values = { ...values, eventdatestart: `${eventdatestart} ${hourstart}:${minutestart}:00`, eventdateend: `${eventdateend} ${hourend}:${minuteend}:00` };
+    values = { 
+      ...values, 
+      eventdatestart: `${eventdatestart} ${hourstart.length === 1 ? `0${hourstart}` : hourstart}:${minutestart.length === 1 ? `0${minutestart}` : minutestart}:00`, 
+      eventdateend: `${eventdateend} ${hourend.length === 1 ? `0${hourend}` : hourend}:${minuteend.length === 1 ? `0${minuteend}` : minuteend}:00` };
     console.log(values);
     this.props.makeEvent(
       values, 
@@ -64,10 +67,13 @@ class FeedForm extends Component {
 
   validateForm = (values) => {
     const errors = {};
-    // const { eventdatestart, hourstart, minutestart, eventdateend, hourend, minuteend } = values;
-    // if (eventdatestart && hourstart && minutestart && eventdateend && hourend && minuteend && !validateDate(`${eventdatestart} ${hourstart}:${minutestart}:00`, `${eventdateend} ${hourend}:${minuteend}:00`)) {
-    //   errors.minuteend = "End date happens before start date!";
-    // }
+    const { eventdatestart, hourstart, minutestart, eventdateend, hourend, minuteend } = values;
+    if (eventdatestart && hourstart && minutestart && eventdateend && hourend && minuteend && !validateDate(`${eventdatestart} ${hourstart}:${minutestart}:00`, `${eventdateend} ${hourend}:${minuteend}:00`)) {
+      errors.minuteend = "End date happens before start date, or event was too long.";
+    }
+    if (eventdatestart && hourstart && minutestart && !validateStartDate(`${eventdatestart} ${hourstart}:${minutestart}:00`)){
+      errors.minutestart = "Start date is before current time";
+    }
 
     return errors;
   }
@@ -76,6 +82,18 @@ class FeedForm extends Component {
     // console.log(props);
     return <div style={{ color: "red" }}>{props.children}</div>;
   }
+
+  renderServerError = () => {
+    return (
+      <Menu.Item>
+        <Message negative>
+          <Message.Header>Oops!</Message.Header>
+          <p>{this.state.formError}</p>
+        </Message>
+      </Menu.Item>
+    );
+  }
+
 
   renderForm = ({ errors, status, touched, isSubmitting }) => {
     return (
@@ -140,7 +158,7 @@ class FeedForm extends Component {
             Submit
           </Button>
         </Menu.Item>
-        {this.state.formError}
+        {this.state.formError && this.renderServerError()}
 
       </Form>
     );

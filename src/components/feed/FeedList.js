@@ -8,18 +8,17 @@ import FeedReminder from "../feed/FeedReminder";
 
 class FeedList extends Component {
 
-  state = {};
-
-  pickIconName = (category) => {
+  pickIconStyle = (category) => {
 
     switch(category) {
-      case "parties": return "fire";
-      case "professional": return "handshake";
-      case "promotion": return "money";
-      case "gaming": return "game";
-      case "entertainment": return "star";
-      case "food": return "food";
-      case "social": return "users";
+      case "party": return { name: "fire", color: "orange" };
+      case "professional": return { name: "handshake", color: "blue" };
+      case "promotion": return { name: "money", color: "green" };
+      case "gaming": return { name: "game", color: "purple" };
+      case "entertainment": return { name: "star", color: "yellow" };
+      case "food": return { name: "food", color: "olive" };
+      case "social": return { name: "users", color: "teal" };
+      case "sports": return { name: "football ball", color: "brown" };
       default:
         return "question";
     }
@@ -41,6 +40,7 @@ class FeedList extends Component {
 
   renderFeed = () => {
     const cardArray =  _.map(this.props.event, (posting, key) => {
+      const iconStyle = this.pickIconStyle(posting.category);
       return (
         <Card key={key}>
           <Card.Content>
@@ -52,13 +52,13 @@ class FeedList extends Component {
           </Card.Content>
           <Card.Content extra>
             <p>
-              <Icon name={this.pickIconName(posting.category)} />{posting.category}
+              <Icon name={iconStyle.name} color={iconStyle.color} />{posting.category}
             </p>
             <p>
-              <Icon name="map marker" />{posting.location}
+              <Icon name="map marker" color="red"/>{posting.location}
             </p>
             <p>
-              <Icon name="calendar outline" />{`${formatDate(new Date(posting.eventdatestart))} - ${formatDate(new Date(posting.eventdateend))}`}
+              <Icon name="calendar outline" color="violet" />{`${formatDate(new Date(posting.eventdatestart))} - ${formatDate(new Date(posting.eventdateend))}`}
             </p>
             {this.remindMePopup(posting)}
           </Card.Content>

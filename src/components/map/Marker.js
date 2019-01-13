@@ -7,17 +7,18 @@ class Marker extends Component {
 
   state = { enableReminderForm: false }
 
-  pickIconName = () => {
+  pickIconStyle = () => {
     const { category } = this.props.data;
 
     switch(category) {
-      case "parties": return "fire";
-      case "professional": return "handshake";
-      case "promotion": return "money";
-      case "gaming": return "game";
-      case "entertainment": return "star";
-      case "food": return "food";
-      case "social": return "users";
+      case "party": return { name: "fire", color: "orange" };
+      case "professional": return { name: "handshake", color: "blue" };
+      case "promotion": return { name: "money", color: "green" };
+      case "gaming": return { name: "game", color: "purple" };
+      case "entertainment": return { name: "star", color: "yellow" };
+      case "food": return { name: "food", color: "olive" };
+      case "social": return { name: "users", color: "teal" };
+      case "sports": return { name: "football ball", color: "brown" };
       default:
         return "question";
     }
@@ -36,6 +37,7 @@ class Marker extends Component {
 
   renderType = () => {
     const { name, userName, description, category, location, eventdatestart, eventdateend } = this.props.data
+    const iconStyle = this.pickIconStyle(category);
     return (
       <Popup
         on="click"
@@ -43,8 +45,8 @@ class Marker extends Component {
         onClose={() => this.setState({ enableReminderForm: false })}
         trigger={
           <Icon 
-            name={this.pickIconName()} 
-            color={"teal" || null} 
+            name={iconStyle.name} 
+            color={iconStyle.color || null} 
             circular size="big"
             inverted
           />
@@ -61,7 +63,7 @@ class Marker extends Component {
           </Card.Content>
           <Card.Content extra>
             <p>
-              <Icon name={this.pickIconName(category)} />{category}
+              <Icon name={iconStyle.name} color={iconStyle.color} />{category}
             </p>
             <p>
               <Icon name="map marker" />{location}

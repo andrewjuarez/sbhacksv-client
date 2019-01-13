@@ -22,6 +22,7 @@ class FeedReminder extends Component {
     };
     console.log(toSend);
     this.setState({ disableButton: true, loading: true }, () => sendReminder(toSend, () => this.setState({ success: true, loading: false })));
+    localStorage.setItem("twilioMobile", values.phone);
     actions.setSubmitting(false);
   }
 
@@ -81,7 +82,7 @@ class FeedReminder extends Component {
             validationSchema={this.validateSchema()}
             validate={this.validateForm}
             initialValues={{ 
-              phone: ""
+              phone:  localStorage.getItem("twilioMobile") || ""
               
             }}
             onSubmit={this.onSubmit}
