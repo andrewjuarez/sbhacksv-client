@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import  { Button, Form as SemForm } from "semantic-ui-react";
 import * as Yup from "yup";
+import { sendReminder } from "../../api/twilio";
 
 import SemField from "../helpers/SemField";
+import formatDate from "../../utils/formatDate";
 
 const validatePhone = (phone) => {
   return /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(phone);
@@ -11,15 +13,15 @@ const validatePhone = (phone) => {
 
 class FeedReminder extends Component {
 
-  state = { formError: "", disableButton: false };
+  state = { formError: "", disableButton: false, loading: false, success: false };
 
   onSubmit = (values, actions) => {
     const toSend = { 
       number: `+1${values.phone}`, 
-      postId: this.props.eventId, 
-      message: `${this.props.eventData.name}: ${this.props.eventData.description}`
+      message: `${this.props.eventData.name}: ${this.props.eventData.description}. Event starts on ${formatDate(new Date(this.props.eventData.eventdatestart))}`
     };
     console.log(toSend);
+    this.setState({ disableButton: true, loading: true }, () => sendReminder(toSend, () => this.setState({ success: true, loading: false })));
     actions.setSubmitting(false);
   }
 
@@ -55,8 +57,13 @@ class FeedReminder extends Component {
       
 
         
-          <Button type="submit" disabled={isSubmitting || this.state.disableButton} loading={this.state.disableButton} >
-            Submit
+          <Button 
+            type="submit" 
+            disabled={isSubmitting || this.state.disableButton} 
+            loading={this.state.loading} 
+            color={this.state.success ? "green" : null }  
+          >
+            {this.state.success ? "Success!" : "Submit" }  
           </Button>
         
         {this.state.formError}

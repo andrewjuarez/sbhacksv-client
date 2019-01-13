@@ -39,6 +39,8 @@ class Marker extends Component {
     return (
       <Popup
         on="click"
+        size="mini"
+        onClose={() => this.setState({ enableReminderForm: false })}
         trigger={
           <Icon 
             name={this.pickIconName()} 

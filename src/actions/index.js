@@ -1,9 +1,5 @@
-import axios from "axios";
+import server from "../api/server";
 import { SIGN_IN, SIGN_OUT, SAVE_NAME, SAVE_SCHOOL, FETCH_EVENTS } from "./types";
-
-const server = axios.create({
-  baseURL: "http://localhost:3090"
-});
 
 export const signIn = userId => {
   return {

@@ -19,7 +19,7 @@ class Navbar extends Component {
 
   render() {
     return (
-      <Menu>
+      <Menu style={{ borderRadius: 0 }}>
         <Menu.Item>
           <Link to="/">Youni</Link>
         </Menu.Item>
