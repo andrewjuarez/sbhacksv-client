@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Card, Icon, Button, Popup } from "semantic-ui-react";
+import { Card, Icon, Button, Popup, Message } from "semantic-ui-react";
 import _ from "lodash";
 
 import formatDate from "../../utils/formatDate";
@@ -67,6 +67,10 @@ class FeedList extends Component {
         </Card>
       );
     });
+
+    if (cardArray.length === 0) {
+      return <Message info header="Whoops!" content="No upcoming events found!" />;
+    }
 
     return (
       <Card.Group style={{ height: "70vh", overflowY: "scroll" }}>
