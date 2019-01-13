@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import SemField from "../helpers/SemField";
 import { makeEvent } from "../../actions";
 import history from "../../history";
+import validateDate from "../../utils/validateDate";
 
 const categoryOptions = [
   { value: "parties", text: "Parties" },
@@ -55,6 +56,10 @@ class FeedForm extends Component {
 
   validateForm = (values) => {
     const errors = {};
+    // const { eventdatestart, hourstart, minutestart, eventdateend, hourend, minuteend } = values;
+    // if (eventdatestart && hourstart && minutestart && eventdateend && hourend && minuteend && !validateDate(`${eventdatestart} ${hourstart}:${minutestart}:00`, `${eventdateend} ${hourend}:${minuteend}:00`)) {
+    //   errors.minuteend = "End date happens before start date!";
+    // }
 
     return errors;
   }
