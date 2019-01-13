@@ -49,13 +49,13 @@ export const makeEvent = (formValues, callback, callbackError) => async (dispatc
   }
 }
 
-export const fetchEvents = () =>  async (dispatch, getState) => {
+export const fetchEvents = (category="all", callback=null) =>  async (dispatch, getState) => {
   try {
-    const response = await server.post("/events", { school: getState().auth.userSchool || "" });
+    const response = await server.post("/events", { school: getState().auth.userSchool || "", category });
     // console.log(getState().auth);
     // console.log(response);
     dispatch({ type: FETCH_EVENTS, payload: response.data });
-    // todo: reducer for events
+    if (callback) callback();
 
   } catch (e) {
     console.log(e);

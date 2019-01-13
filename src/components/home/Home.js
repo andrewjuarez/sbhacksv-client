@@ -6,6 +6,7 @@ import { fetchEvents } from "../../actions";
 
 import FeedList from "../feed/FeedList";
 import RenderGoogleMap from "../map/RenderGoogleMap";
+import FeedFilter from "../feed/FeedFilter";
 
 class Home extends Component {
 
@@ -43,8 +44,9 @@ class Home extends Component {
     return (
       <div>
         
-        <Grid stackable doubling>
+        <Grid stackable doubling style={{ marginLeft: "5px" }}>
           <Grid.Column width={4}>
+            <FeedFilter />
             <Segment><FeedList /></Segment>
           </Grid.Column>
           <Grid.Column stretched width={12} >

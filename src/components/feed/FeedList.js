@@ -27,12 +27,14 @@ class FeedList extends Component {
   remindMePopup = (posting) => {
     return (
       <Popup
-        
+        size="mini"
         on="click"
         trigger={<Button fluid basic color="green">Remind me</Button>}
       >
-        <Popup.Content>
-          <FeedReminder eventId={posting._id} eventData={posting} />
+        <Popup.Content as={Card}>
+          <Card.Content extra>
+            <FeedReminder eventId={posting._id} eventData={posting} />
+          </Card.Content>
         </Popup.Content>
       </Popup>
     );
@@ -67,7 +69,7 @@ class FeedList extends Component {
     });
 
     return (
-      <Card.Group style={{ height: "80vh", overflow: "scroll" }}>
+      <Card.Group style={{ height: "70vh", overflowY: "scroll" }}>
         {cardArray}
       </Card.Group>
     );

@@ -51,8 +51,8 @@ class FeedReminder extends Component {
 
         
           Phone # to text
-          <SemForm.Group>
-            <SemField type="text" component={SemForm.Input} name="phone" placeholder="1234567890" />
+          <SemForm.Group style={{ marginTop: "3px" }}>
+            <SemField fluid type="text" component={SemForm.Input} name="phone" placeholder="1234567890" />
             <ErrorMessage name="phone" component={this.renderError} />
           </SemForm.Group>
       
@@ -60,9 +60,13 @@ class FeedReminder extends Component {
         
           <Button 
             type="submit" 
+            basic
+            fluid
+            primary
             disabled={isSubmitting || this.state.disableButton} 
             loading={this.state.loading} 
             color={this.state.success ? "green" : null }  
+            style={{ marginTop: "3px" }}
           >
             {this.state.success ? "Success!" : "Submit" }  
           </Button>

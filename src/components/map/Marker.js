@@ -27,7 +27,7 @@ class Marker extends Component {
   remindMePopup = (posting) => {
     return (
       <React.Fragment>
-        <Button disabled={this.state.enableReminderForm} fluid basic color="green" onClick={() => this.setState({ enableReminderForm: true })}>Remind me</Button>
+        <Button disabled={this.state.enableReminderForm} style={{ marginBottom: "3px" }} fluid basic color="green" onClick={() => this.setState({ enableReminderForm: true })}>Remind me</Button>
         {this.state.enableReminderForm && <FeedReminder eventId={posting._id} eventData={posting} />}
       </React.Fragment>
       
@@ -66,10 +66,10 @@ class Marker extends Component {
               <Icon name={iconStyle.name} color={iconStyle.color} />{category}
             </p>
             <p>
-              <Icon name="map marker" />{location}
+              <Icon name="map marker" color="red" />{location}
             </p>
             <p>
-              <Icon name="calendar outline" />{`${formatDate(new Date(eventdatestart))} - ${formatDate(new Date(eventdateend))}`}
+              <Icon name="calendar outline" color="violet" />{`${formatDate(new Date(eventdatestart))} - ${formatDate(new Date(eventdateend))}`}
             </p>
             {this.remindMePopup(this.props.data)}
           </Card.Content>
