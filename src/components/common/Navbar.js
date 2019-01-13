@@ -21,7 +21,7 @@ class Navbar extends Component {
     return (
       <Menu style={{ borderRadius: 0 }}>
         <Menu.Item>
-          <Link to="/">Youni</Link>
+          <Link to="/">{this.props.isSignedIn && this.props.school ? `Youni @ ${this.props.school.charAt(0).toUpperCase() + this.props.school.slice(1)}`: "Youni"}</Link>
         </Menu.Item>
         {this.renderAuthLinks()}
         <Menu.Item position="right">
@@ -33,7 +33,7 @@ class Navbar extends Component {
 }
 
 const mapStateToProps = state => {
-  return { isSignedIn: state.auth.isSignedIn };
+  return { isSignedIn: state.auth.isSignedIn, school: state.auth.userSchool };
 }
 
 export default connect(mapStateToProps)(withRouter(Navbar));
